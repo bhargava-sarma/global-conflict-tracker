@@ -1,26 +1,88 @@
 @import "tailwindcss";
 
+@theme {
+  --color-grey-900: #1a1a1a;
+  --color-grey-800: #2d2d2d;
+  --color-grey-700: #404040;
+  --color-grey-600: #555555;
+  --color-grey-400: #aaaaaa;
+  --color-black: #000000;
+
+  --color-status-red: #ff4444;
+  --color-status-yellow: #ffaa00;
+  --color-status-green: #00cc66;
+
+  --color-background: var(--color-grey-900);
+  --color-foreground: #ffffff;
+}
+
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+  --background: #1a1a1a;
+  --foreground: #ffffff;
 }
 
 body {
-  background: var(--background);
+  background-color: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: system-ui, -apple-system, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Glassmorphism Utilities */
+@utility glass {
+  background: rgba(26, 26, 26, 0.7);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+@utility glass-card {
+  @apply glass rounded-xl shadow-lg transition-all duration-300;
+}
+
+@utility glass-hover {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+
+  &:hover {
+    background: rgba(45, 45, 45, 0.8);
+    border-color: rgba(255, 255, 255, 0.2);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+  }
+}
+
+@utility glass-popup {
+  .leaflet-popup-content-wrapper {
+    @apply bg-[#1a1a1a]/90 backdrop-blur-xl border border-white/10 p-0 rounded-xl shadow-2xl text-white;
+  }
+
+  .leaflet-popup-tip {
+    @apply bg-[#1a1a1a]/90 border border-white/10;
+  }
+}
+
+/* Leaflet Overrides for Dark/Glass Theme */
+.leaflet-popup-content-wrapper {
+  background: rgba(26, 26, 26, 0.85) !important;
+
+  -webkit-backdrop-filter: blur(10px);
+  color: white !important;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 12px !important;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4) !important;
+}
+
+.leaflet-popup-content {
+  margin: 12px !important;
+  line-height: 1.5;
+}
+
+.leaflet-container a.leaflet-popup-close-button {
+  color: white !important;
+  font: 18px/18px Tahoma, Verdana, sans-serif !important;
+}
+
+.leaflet-popup-tip {
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
 }

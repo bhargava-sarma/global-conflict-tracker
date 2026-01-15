@@ -1,0 +1,38 @@
+
+> conflict-tracker@0.1.0 build
+> next build
+
+▲ Next.js 16.1.1 (Turbopack)
+
+  Creating an optimized production build ...
+✓ Compiled successfully in 1782.4ms
+  Running TypeScript ...
+  Collecting page data using 15 workers ...
+Error: supabaseUrl is required.
+    at <unknown> (C:\Bhargav Sarma\Live Tracker\.next\server\chunks\lib_supabase_ts_7ce31ac1._.js:37:43012)
+    at new rh (C:\Bhargav Sarma\Live Tracker\.next\server\chunks\lib_supabase_ts_7ce31ac1._.js:37:43263)
+    at module evaluation (C:\Bhargav Sarma\Live Tracker\.next\server\chunks\lib_supabase_ts_7ce31ac1._.js:37:47528)
+    at instantiateModule (C:\Bhargav Sarma\Live Tracker\.next\server\chunks\[turbopack]_runtime.js:740:9)
+    at getOrInstantiateModuleFromParent (C:\Bhargav Sarma\Live Tracker\.next\server\chunks\[turbopack]_runtime.js:763:12)
+    at Context.esmImport [as i] (C:\Bhargav Sarma\Live Tracker\.next\server\chunks\[turbopack]_runtime.js:228:20)
+    at module evaluation (C:\Bhargav Sarma\Live Tracker\.next\server\chunks\[root-of-the-server]__0e11afed._.js:1:1267)
+    at instantiateModule (C:\Bhargav Sarma\Live Tracker\.next\server\chunks\[turbopack]_runtime.js:740:9)
+    at instantiateRuntimeModule (C:\Bhargav Sarma\Live Tracker\.next\server\chunks\[turbopack]_runtime.js:768:12)
+    at getOrInstantiateRuntimeModule (C:\Bhargav Sarma\Live Tracker\.next\server\chunks\[turbopack]_runtime.js:781:12)
+Error: supabaseUrl is required.
+    at <unknown> (C:\Bhargav Sarma\Live Tracker\.next\server\chunks\lib_supabase_ts_7ce31ac1._.js:37:43012)
+    at new rh (C:\Bhargav Sarma\Live Tracker\.next\server\chunks\lib_supabase_ts_7ce31ac1._.js:37:43263)
+    at module evaluation (C:\Bhargav Sarma\Live Tracker\.next\server\chunks\lib_supabase_ts_7ce31ac1._.js:37:47528)
+    at instantiateModule (C:\Bhargav Sarma\Live Tracker\.next\server\chunks\[turbopack]_runtime.js:740:9)
+    at getOrInstantiateModuleFromParent (C:\Bhargav Sarma\Live Tracker\.next\server\chunks\[turbopack]_runtime.js:763:12)
+    at Context.esmImport [as i] (C:\Bhargav Sarma\Live Tracker\.next\server\chunks\[turbopack]_runtime.js:228:20)
+    at module evaluation (C:\Bhargav Sarma\Live Tracker\.next\server\chunks\[root-of-the-server]__c4525e64._.js:1:3523)
+    at instantiateModule (C:\Bhargav Sarma\Live Tracker\.next\server\chunks\[turbopack]_runtime.js:740:9)
+    at instantiateRuntimeModule (C:\Bhargav Sarma\Live Tracker\.next\server\chunks\[turbopack]_runtime.js:768:12)
+    at getOrInstantiateRuntimeModule (C:\Bhargav Sarma\Live Tracker\.next\server\chunks\[turbopack]_runtime.js:781:12)
+
+> Build error occurred
+Error: Failed to collect page data for /api/events
+    at ignore-listed frames {
+  type: 'Error'
+}
