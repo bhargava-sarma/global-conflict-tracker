@@ -1,10 +1,11 @@
 'use client';
 
 import { useEffect, useState, useRef } from 'react';
-import { MapContainer, TileLayer, Marker, Popup, useMap } from 'react-leaflet';
+import { MapContainer, TileLayer, Marker, Popup, useMap, GeoJSON } from 'react-leaflet';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 import { Database } from '@/lib/supabase';
+import TopEvents from '../UI/TopEvents';
 
 // Fix for default Leaflet markers in Next.js
 // Custom Pulsing Dot Icons
@@ -31,6 +32,8 @@ type Event = Database['public']['Tables']['events']['Row'];
 export default function MapComponent() {
     const [events, setEvents] = useState<Event[]>([]);
     const [loading, setLoading] = useState(true);
+    const [geoJsonData, setGeoJsonData] = useState(null);
+    const geoJsonLayerRef = useRef<L.GeoJSON>(null);
 
     const fetchEvents = async () => {
         try {
@@ -48,6 +51,13 @@ export default function MapComponent() {
 
     useEffect(() => {
         fetchEvents();
+
+        // Fetch GeoJSON
+        fetch('/world-countries.json')
+            .then(res => res.json())
+            .then(data => setGeoJsonData(data))
+            .catch(err => console.error('Failed to load GeoJSON', err));
+
         // Poll every 5 minutes (300000ms)
         const interval = setInterval(fetchEvents, 300000);
         return () => clearInterval(interval);
@@ -60,9 +70,62 @@ export default function MapComponent() {
         [85, 180]    // NorthEast
     );
 
+    const onEachCountry = (feature: any, layer: any) => {
+        layer.on({
+            mouseover: (e: any) => {
+                const targetLayer = e.target;
+                targetLayer.setStyle({
+                    fillOpacity: 0.1,
+                    weight: 5, // Massive white border
+                    color: 'white',
+                    fillColor: 'transparent'
+                });
+                targetLayer.bringToFront();
+
+                if (targetLayer.getElement()) {
+                    targetLayer.getElement().classList.add('country-hover-effect');
+                }
+
+                window.dispatchEvent(new CustomEvent('country-enter'));
+            },
+            mouseout: (e: any) => {
+                const targetLayer = e.target;
+                if (geoJsonLayerRef.current) {
+                    geoJsonLayerRef.current.resetStyle(targetLayer);
+                }
+
+                if (targetLayer.getElement()) {
+                    targetLayer.getElement().classList.remove('country-hover-effect');
+                }
+
+                window.dispatchEvent(new CustomEvent('country-leave'));
+            }
+        });
+    };
+
+    const countryStyle = {
+        fillColor: 'transparent',
+        weight: 0.5,
+        opacity: 0.2,
+        color: 'white',
+        fillOpacity: 0
+    };
+
+    const mapRef = useRef<L.Map>(null);
+
+    const handleEventClick = (lat: number, lng: number) => {
+        if (mapRef.current) {
+            mapRef.current.flyTo([lat, lng], 8, {
+                animate: true,
+                duration: 1.5
+            });
+        }
+    };
+
     return (
         <div className="relative w-full h-screen z-0">
             <MapContainer
+                ref={mapRef}
                 center={[20, 0]}
                 zoom={2.5}
                 minZoom={2.5} // Prevents "zoomed out too far" look
@@ -77,6 +140,17 @@ export default function MapComponent() {
                     url="https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png"
                     noWrap={true} // Stops the map from repeating horizontally
                 />
+
+                {/* GeoJSON Layer removed for default look
+                {geoJsonData && (
+                    <GeoJSON
+                        data={geoJsonData}
+                        style={countryStyle}
+                        onEachFeature={onEachCountry}
+                        ref={geoJsonLayerRef}
+                    />
+                )}
+                */}
 
                 {events.map((event) => (
                     <Marker
@@ -106,8 +180,8 @@ export default function MapComponent() {
                                         <span className="text-[10px] uppercase tracking-wider text-gray-400 font-medium">{event.event_type}</span>
                                     </div>
                                     <span className="text-[10px] text-gray-500">
-                                        {new Date(event.occurred_at).toLocaleString([], {
-                                            month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit'
+                                        {new Date(event.occurred_at).toLocaleDateString([], {
+                                            month: 'short', day: 'numeric'
                                         })}
                                     </span>
                                 </div>
@@ -127,6 +201,9 @@ export default function MapComponent() {
                     </Marker>
                 ))}
             </MapContainer>
+
+            {/* Top 5 Critical Events Card */}
+            <TopEvents events={events} onEventClick={handleEventClick} />
 
             {/* Loading Indicator */}
             {loading && (

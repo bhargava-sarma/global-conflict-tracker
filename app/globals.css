@@ -86,3 +86,19 @@ body {
 .leaflet-popup-tip {
   border-top: 1px solid rgba(255, 255, 255, 0.1);
 }
+
+/* Custom Cursor & Country Effects */
+/* Custom Cursor & Country Effects */
+html,
+body,
+*,
+*::before,
+*::after {
+  cursor: none !important;
+}
+
+.country-hover-effect {
+  /* filter: drop-shadow(0 0 10px rgba(34, 211, 238, 0.4)); */
+  transition: all 0.3s ease;
+  z-index: 1000;
+}

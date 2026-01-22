@@ -11,7 +11,7 @@ async function verify() {
     const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
     const key = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
     const serviceKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
-    const perplexityKey = process.env.PERPLEXITY_API_KEY;
+    const geminiKey = process.env.GEMINI_API_KEY;
 
     console.log("1. Checking Environment Variables...");
     if (!url || url.includes('your-project')) {
@@ -38,10 +38,10 @@ async function verify() {
         }
     }
 
-    if (!perplexityKey || perplexityKey.includes('your-perplexity-api-key')) {
-        console.warn("⚠️ PERPLEXITY_API_KEY is missing/default.");
+    if (!geminiKey || geminiKey.includes('your-gemini-api-key')) {
+        console.warn("⚠️ GEMINI_API_KEY is missing/default.");
     } else {
-        console.log("✅ PERPLEXITY_API_KEY is set.");
+        console.log("✅ GEMINI_API_KEY is set.");
     }
 
     if ((!url || url.includes('your-project')) || (!key || key.includes('your-anon-key'))) {

@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { fetchFromPerplexity } from '@/lib/perplexity';
+import { fetchFromGemini } from '@/lib/gemini';
 import { supabaseAdmin } from '@/lib/supabase';
 
 export const dynamic = 'force-dynamic'; // Prevent caching
@@ -12,8 +12,8 @@ export async function GET(request: Request) {
             return NextResponse.json({ success: false, error: "Server misconfigured: Missing Service Key" }, { status: 500 });
         }
 
-        console.log("Starting Perplexity News Fetch...");
-        const events = await fetchFromPerplexity();
+        console.log("Starting Gemini News Fetch...");
+        const events = await fetchFromGemini();
 
         if (events.length === 0) {
             return NextResponse.json({ success: true, message: 'No events found or API issue', count: 0 });
